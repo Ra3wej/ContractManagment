@@ -1,0 +1,6 @@
+@ContractManagment.Api_HostAddress = http://localhost:5198
+
+GET {{ContractManagment.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
