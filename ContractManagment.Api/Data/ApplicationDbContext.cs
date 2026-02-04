@@ -34,9 +34,28 @@ public partial class ApplicationDbContext
         {
             entity.ToTable(c => c.HasCheckConstraint("CK_Contract_StartDate_EndDate",
                                                      "[StartDate] < [EndDate]"));
+            entity.ToTable(c => c.HasCheckConstraint("CK_Contract_Value_greater_than_zero",
+                                                 "[ContractValue] >= 0"));
             entity.HasIndex(c => c.ContractNumber).IsUnique();
         });
+        modelBuilder.Entity<Clients>(entity =>
+        {
+            entity.HasIndex(c => c.Email).IsUnique();
+            entity.HasIndex(c => c.CompanyRegistrationNumber).IsUnique();
 
+        });
+
+        modelBuilder.Entity<ContractDocuments>(entity =>
+        {
+            entity.HasIndex(c => new {c.DocumentName,c.ContractId}).IsUnique();
+
+        });
+
+        modelBuilder.Entity<Categories>(entity =>
+        {
+            entity.HasIndex(c => c.Name).IsUnique();
+
+        });
         OnModelCreatingPartial(modelBuilder);
 
     }

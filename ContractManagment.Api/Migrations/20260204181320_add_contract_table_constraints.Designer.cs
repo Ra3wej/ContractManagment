@@ -4,6 +4,7 @@ using ContractManagment.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContractManagment.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260204181320_add_contract_table_constraints")]
+    partial class add_contract_table_constraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,15 +79,12 @@ namespace ContractManagment.Api.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("StatusIsActive")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Categories", "ContractApi");
                 });
@@ -106,7 +106,8 @@ namespace ContractManagment.Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CompanyRegistrationNumber")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactPerson")
                         .IsRequired()
@@ -117,7 +118,7 @@ namespace ContractManagment.Api.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IndustryId")
                         .HasColumnType("int");
@@ -133,13 +134,6 @@ namespace ContractManagment.Api.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyRegistrationNumber")
-                        .IsUnique()
-                        .HasFilter("[CompanyRegistrationNumber] IS NOT NULL");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.HasIndex("IndustryId");
 
@@ -199,8 +193,7 @@ namespace ContractManagment.Api.Migrations
 
                     b.Property<string>("DocumentName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DocumentRandomName")
                         .IsRequired()
@@ -231,9 +224,6 @@ namespace ContractManagment.Api.Migrations
                     b.HasIndex("ContractId");
 
                     b.HasIndex("DocumentTypeId");
-
-                    b.HasIndex("DocumentName", "ContractId")
-                        .IsUnique();
 
                     b.ToTable("ContractDocuments", "ContractApi");
                 });
