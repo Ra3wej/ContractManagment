@@ -10,20 +10,21 @@ public class ContractDocuments : IDateTimeAuditableEntity
     [Key]
     public int Id { get; set; }
 
-    public string DocumentName { get; set; } = null!;
+    public string DocumentName { get; set; } 
+    public string DocumentRandomName { get; set; }
 
     public int DocumentTypeId { get; set; }
     [ForeignKey(nameof(DocumentTypeId))]
-    public ContractDocumentType DocumentType { get; set; } = null!;
+    public ContractDocumentType DocumentType { get; set; } 
 
     public string FilePath { get; set; }
 
-    public DateTime UploadDate { get; set; }
+    public DateTime UploadDate { get; set; } = DateTime.Now;
 
     public long FileSizeInBytes { get; set; }
 
     public string? Description { get; set; }
-
+    [Required]
     public string UploadedBy { get; set; }
 
     public int ContractId { get; set; }

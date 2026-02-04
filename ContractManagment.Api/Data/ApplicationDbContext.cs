@@ -1,5 +1,7 @@
 ﻿using ContractManagment.Api.Models;
-using ContractManagment.Api.Models.Contracts;
+using ContractManagment.Api.Models.ClientsModels;
+using ContractManagment.Api.Models.ContractsModels;
+using ContractManagment.Api.Models.ContractsModels.ContractDocumentsModels;
 using ContractManagment.Api.Services.ModelInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -17,18 +19,23 @@ public partial class ApplicationDbContext
     }
 
     public DbSet<AuditLog> AuditLogs { get; set; }
-    //public DbSet<Contracts> Contracts { get; set; }
-
+    public DbSet<Clients> Clients { get; set; }
+    public DbSet<Industry> Industries { get; set; }
+    public DbSet<Contracts> Contracts { get; set; }
+    public DbSet<ContractDocuments> ContractDocuments { get; set; }
+    public DbSet<ContractDocumentType> ContractDocumentTypes { get; set; }
+    public DbSet<Categories> Categories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("ContractApi");
 
-        //modelBuilder.Entity<Contracts>(entity =>
-        //{
-        //    //entity.HasIndex(c =>c.ContractNumber).IsUnique();
-        //    entity.HasIndex(c =>c.GuidKey).IsUnique();
-        //});
+        modelBuilder.Entity<Contracts>(entity =>
+        {
+            entity.ToTable(c => c.HasCheckConstraint("CK_Contract_StartDate_EndDate",
+                                                     "[StartDate] < [EndDate]"));
+            entity.HasIndex(c => c.ContractNumber).IsUnique();
+        });
 
         OnModelCreatingPartial(modelBuilder);
 
@@ -45,11 +52,11 @@ public partial class ApplicationDbContext
         return base.SaveChanges();
     }
     // Override SaveChangesAsync method
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         TimerUpdates();
         SaveAudits();
-        return base.SaveChangesAsync(cancellationToken);
+        return await base.SaveChangesAsync(cancellationToken);
     }
 
     private void TimerUpdates()
@@ -70,7 +77,7 @@ public partial class ApplicationDbContext
         }
     }
 
-   
+
     private void SaveAudits()
     {
         var modfied = ChangeTracker.Entries()

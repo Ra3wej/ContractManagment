@@ -1,4 +1,5 @@
-﻿using ContractManagment.Api.Services.ModelInterfaces;
+﻿using ContractManagment.Api.Models.ContractsModels;
+using ContractManagment.Api.Services.ModelInterfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -30,4 +31,6 @@ public class Clients: IDateTimeAuditableEntity
 
     public DateTime CreatedAt { get; set; }
     public DateTime LastUpdatedAt { get; set; }
+
+    public ICollection<Contracts> Contracts { get; set; } = [];
 }

@@ -53,9 +53,9 @@ public static class ExceptionHandlerMiddleware
 public sealed class ApiErrorResponse
 {
     public int StatusCode { get; set; }
-    public string Message { get; set; } = null!;
-    public string Path { get; set; } = null!;
-    public string Method { get; set; } = null!;
-    public string TraceId { get; set; } = null!;
+    public string Message { get; set; }  
+    public string Path { get; set; }  
+    public string Method { get; set; }  
+    public string TraceId { get; set; }  
     public DateTime Timestamp { get; set; }
 }
