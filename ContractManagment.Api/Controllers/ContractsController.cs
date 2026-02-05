@@ -1,0 +1,107 @@
+﻿using ContractManagment.Api.DTOs.ContractsDTOs;
+using ContractManagment.Api.Services.ContractServices;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ContractManagment.Api.Controllers;
+
+[Route("api/contracts")]
+[ApiController]
+public class ContractsController : ControllerBase
+{
+    private readonly IContractsServices _contractsServices;
+
+    public ContractsController(IContractsServices contractsServices)
+    {
+        _contractsServices = contractsServices;
+    }
+
+    // POST /api/contracts
+    [HttpPost]
+    public async Task<IActionResult> CreateNewContract([FromBody] AddContractsDto dto)
+    {
+        var result = await _contractsServices.CreateNewContract(dto);
+
+        if (!result.IsSuccess)
+            return BadRequest(result.Message);
+
+        return Ok(result.Data);
+    }
+
+    // GET /api/contracts?skip=0&take=10
+    [HttpGet]
+    public async Task<IActionResult> GetAllContracts(
+        [FromQuery] int skip = 0,
+        [FromQuery] int take = 10)
+    {
+        var result = await _contractsServices.GetAllContractsAsync(skip, take);
+
+        if (!result.IsSuccess)
+            return BadRequest(result.Message);
+
+        return Ok(result.Data);
+    }
+
+    // GET /api/contracts/{id}
+    [HttpGet("{contractNumber:guid}")]
+    public async Task<IActionResult> GetContractById(Guid contractNumber)
+    {
+        var result = await _contractsServices.GetOneContract(contractNumber);
+
+        if (!result.IsSuccess)
+            return NotFound(result.Message);
+
+        return Ok(result.Data);
+    }
+
+    // PUT /api/contracts/{id}
+    [HttpPut("{contractNumber:guid}")]
+    public async Task<IActionResult> UpdateContract(
+        Guid contractNumber,
+        [FromBody] UpdateContractsDto dto)
+    {
+   
+
+        var result = await _contractsServices.UpdateContract(contractNumber, dto);
+
+        if (!result.IsSuccess)
+            return BadRequest(result.Message);
+
+        return Ok(result.Data);
+    }
+
+    // DELETE /api/contracts/{id}
+    [HttpDelete("{contractNumber:guid}")]
+    public async Task<IActionResult> DeleteContract(Guid contractNumber)
+    {
+        var result = await _contractsServices.DeleteContract(id);
+
+        if (!result.IsSuccess)
+            return BadRequest(result.Message);
+
+        return Ok(result.Data);
+    }
+
+    // PATCH /api/contracts/{id}/status
+    [HttpPatch("{contractNumber:guid}/status")]
+    public async Task<IActionResult> UpdateContractStatus(Guid contractNumber)
+    {
+        var result = await _contractsServices.UpdateContractStatus(contractNumber;
+
+        if (!result.IsSuccess)
+            return BadRequest(result.Message);
+
+        return Ok(result.Data);
+    }
+
+    // POST /api/contracts/{id}/clone
+    [HttpPost("{contractNumber:guid}/clone")]
+    public async Task<IActionResult> CloneContract(Guid contractNumber)
+    {
+        var result = await _contractsServices.CloneContract(contractNumber);
+
+        if (!result.IsSuccess)
+            return BadRequest(result.Message);
+
+        return Ok(result.Data);
+    }
+}

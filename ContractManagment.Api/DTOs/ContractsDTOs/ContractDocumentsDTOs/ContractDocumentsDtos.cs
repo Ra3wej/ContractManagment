@@ -5,6 +5,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ContractManagment.Api.DTOs.ContractsDTOs.ContractDocumentsDTOs;
 
+
+public class GetSmallContractDocumentDto
+{
+    public int Id { get; set; }
+    public string DocumentName { get; set; }
+    public string DocumentType { get; set; }
+    public string FilePath { get; set; }
+
+}
 public class GetContractDocumentsDto
 {
     public int Id { get; set; }

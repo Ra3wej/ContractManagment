@@ -28,7 +28,8 @@ public class Clients : IDateTimeAuditableEntity
     [ForeignKey(nameof(IndustryId))]
     public Industry Industry { get; set; }
 
-    public bool StatusIsActive { get; private set; }
+    public bool StatusIsActive { get; private set; } = true;
+    public bool IsDeleted { get; private set; } = false;
 
     public DateTime CreatedAt { get; set; }
     public DateTime LastUpdatedAt { get; set; }

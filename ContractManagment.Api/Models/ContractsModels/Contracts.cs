@@ -34,6 +34,8 @@ public class Contracts : IDateTimeAuditableEntity
 
     public ContractStatus Status { get; set; }
 
+    public bool IsDeleted { get; set; } = false;
+
     public ContractType ContractType { get; set; }
     public string? Notes { get; set; }
 
