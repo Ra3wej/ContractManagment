@@ -1,4 +1,5 @@
 ﻿using ContractManagment.Api.DTOs.ContractsDTOs;
+using ContractManagment.Api.Models.ContractsModels;
 using ContractManagment.Api.Services.ContractServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ public class ContractsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateNewContract([FromBody] AddContractsDto dto)
     {
-        var result = await _contractsServices.CreateNewContract(dto);
+        var result = await _contractsServices.CreateNewContractAsync(dto);
 
         if (!result.IsSuccess)
             return BadRequest(result.Message);
@@ -45,7 +46,7 @@ public class ContractsController : ControllerBase
     [HttpGet("{contractNumber:guid}")]
     public async Task<IActionResult> GetContractById(Guid contractNumber)
     {
-        var result = await _contractsServices.GetOneContract(contractNumber);
+        var result = await _contractsServices.GetOneContractAsync(contractNumber);
 
         if (!result.IsSuccess)
             return NotFound(result.Message);
@@ -59,9 +60,7 @@ public class ContractsController : ControllerBase
         Guid contractNumber,
         [FromBody] UpdateContractsDto dto)
     {
-   
-
-        var result = await _contractsServices.UpdateContract(contractNumber, dto);
+        var result = await _contractsServices.UpdateContractAsync(contractNumber, dto);
 
         if (!result.IsSuccess)
             return BadRequest(result.Message);
@@ -73,7 +72,7 @@ public class ContractsController : ControllerBase
     [HttpDelete("{contractNumber:guid}")]
     public async Task<IActionResult> DeleteContract(Guid contractNumber)
     {
-        var result = await _contractsServices.DeleteContract(id);
+        var result = await _contractsServices.DeleteContractAsync(contractNumber);
 
         if (!result.IsSuccess)
             return BadRequest(result.Message);
@@ -82,10 +81,10 @@ public class ContractsController : ControllerBase
     }
 
     // PATCH /api/contracts/{id}/status
-    [HttpPatch("{contractNumber:guid}/status")]
-    public async Task<IActionResult> UpdateContractStatus(Guid contractNumber)
+    [HttpPatch("{contractNumber:guid}/{newContractStatus:ContractStatus}/status")]
+    public async Task<IActionResult> UpdateContractStatus(Guid contractNumber,ContractStatus newContractStatus)
     {
-        var result = await _contractsServices.UpdateContractStatus(contractNumber;
+        var result = await _contractsServices.UpdateContractStatusAsync(contractNumber,newContractStatus);
 
         if (!result.IsSuccess)
             return BadRequest(result.Message);
@@ -97,7 +96,7 @@ public class ContractsController : ControllerBase
     [HttpPost("{contractNumber:guid}/clone")]
     public async Task<IActionResult> CloneContract(Guid contractNumber)
     {
-        var result = await _contractsServices.CloneContract(contractNumber);
+        var result = await _contractsServices.CloneContractAsync(contractNumber);
 
         if (!result.IsSuccess)
             return BadRequest(result.Message);

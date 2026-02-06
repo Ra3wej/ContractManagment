@@ -89,8 +89,6 @@ public class UpdateContractsDto
 
     public decimal ContractValue { get; set; }
 
-    public ContractStatus Status { get; set; }
-
     public ContractType ContractType { get; set; }
     public string? Notes { get; set; }
 

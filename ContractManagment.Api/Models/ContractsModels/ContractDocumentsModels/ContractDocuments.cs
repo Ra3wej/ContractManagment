@@ -33,6 +33,7 @@ public class ContractDocuments : IDateTimeAuditableEntity
     [ForeignKey(nameof(ContractId))]
     public Contracts Contract { get; set; } = null!;
 
+    public bool IsDeleted { get; set; }=false;
     public DateTime CreatedAt { get; set; }
     public DateTime LastUpdatedAt { get; set; }
 }

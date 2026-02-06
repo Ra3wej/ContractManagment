@@ -28,27 +28,12 @@ public class Clients : IDateTimeAuditableEntity
     [ForeignKey(nameof(IndustryId))]
     public Industry Industry { get; set; }
 
-    public bool StatusIsActive { get; private set; } = true;
-    public bool IsDeleted { get; private set; } = false;
+    public bool StatusIsActive { get;  set; } = true;
 
     public DateTime CreatedAt { get; set; }
     public DateTime LastUpdatedAt { get; set; }
 
     public ICollection<Contracts> Contracts { get; set; } = [];
 
-    public (bool success, string? errorMessage) DeactivateClient()
-    {
-        if (!StatusIsActive)
-        {
-            return (false, "can not deactivate a Clinet which is already deactivated.");
-        }
-
-        if (Contracts.Count != 0)
-        {
-            return (false, "can only deactivate if it has 0 contracts assigned.");
-        }
-
-        StatusIsActive = false;
-        return (true, null);
-    }
+    
 }
