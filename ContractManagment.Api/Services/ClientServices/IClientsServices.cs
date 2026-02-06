@@ -5,7 +5,7 @@ namespace ContractManagment.Api.Services.ClientServices;
 public interface IClientsServices
 {
 
-    Task<ServiceResult<List<GetClientDto>>> GetAllClientsAsync(int skip, int take);
+    public Task<ServiceResult<List<GetClientDto>>> GetAllClientsAsync(int skip, int take, string? sortBy, string? sortDir);
 
     Task<ServiceResult<int>> GetClientsCountAsync();
     Task<ServiceResult<GetClientStatisticsDto>> GetClientStatisticsAsync(int clientId);

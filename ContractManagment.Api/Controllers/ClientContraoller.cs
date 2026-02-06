@@ -30,10 +30,11 @@ public class ClientsController : ControllerBase
     // GET: api/clients?skip=0&take=10
     [HttpGet]
     public async Task<IActionResult> GetAllClients(
-        [FromQuery] int skip = 0,
-        [FromQuery] int take = 10)
+            [FromQuery] int skip = 0, [FromQuery] int take = 10,
+            [FromQuery] string? sortBy = null, [FromQuery] string? sortDir = "asc"
+          )
     {
-        var result = await _clientsServices.GetAllClientsAsync(skip, take);
+        var result = await _clientsServices.GetAllClientsAsync(skip, take, sortBy, sortDir);
         return Ok(result);
     }
 

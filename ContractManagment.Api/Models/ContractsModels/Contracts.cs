@@ -47,6 +47,8 @@ public class Contracts : IDateTimeAuditableEntity
     public DateTime LastUpdatedAt { get; set; }
     public ICollection<ContractDocuments> ContractDocuments { get; set; } = [];
 
+    /// The satet pattern is better for this
+    /// But i havent used it before. so wont do it now.
     public (bool success, string message) UpdateContractStatus(ContractStatus newStatus)
     {
         if (Status == newStatus)

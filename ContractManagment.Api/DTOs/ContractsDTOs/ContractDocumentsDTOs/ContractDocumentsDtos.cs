@@ -18,7 +18,6 @@ public class GetContractDocumentsDto
 {
     public int Id { get; set; }
     public string DocumentName { get; set; }
-    public string DocumentRandomName { get; set; }
     public string DocumentType { get; set; }
     public string FilePath { get; set; }
 
@@ -33,19 +32,22 @@ public class GetContractDocumentsDto
 }
 public class AddContractDocumentsDto
 {
+    [MaxLength(100)]
+    public string DocumentName { get; set; }
+
     public int DocumentTypeId { get; set; }
+    public string FilePath { get; set; }
+    public long FileSizeInBytes { get; set; }
     public string? Description { get; set; }
     public string UploadedBy { get; set; }
-
-    public int ContractId { get; set; }
 }
 public class UpdateContractDocumentsDto
 {
-    public int Id { get; set; }
-
+    [MaxLength(100)]
+    public string DocumentName { get; set; }
     public int DocumentTypeId { get; set; }
-
+    public string FilePath { get; set; }
+    public long FileSizeInBytes { get; set; }
     public string? Description { get; set; }
     public string UploadedBy { get; set; }
-    public int ContractId { get; set; }
 }

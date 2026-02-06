@@ -47,10 +47,14 @@ public partial class ApplicationDbContext
 
         modelBuilder.Entity<ContractDocuments>(entity =>
         {
-            entity.HasIndex(c => new {c.DocumentName,c.ContractId}).IsUnique();
+            entity.HasIndex(c => new { c.DocumentName, c.ContractId }).IsUnique();
 
         });
+        modelBuilder.Entity<ContractDocumentType>(entity =>
+        {
+            entity.HasIndex(c => c.Name).IsUnique();
 
+        });
         modelBuilder.Entity<Categories>(entity =>
         {
             entity.HasIndex(c => c.Name).IsUnique();

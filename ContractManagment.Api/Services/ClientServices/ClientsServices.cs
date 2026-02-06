@@ -5,7 +5,6 @@ using ContractManagment.Api.Exstensions;
 using ContractManagment.Api.Models.ClientsModels;
 using ContractManagment.Api.Models.ContractsModels;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace ContractManagment.Api.Services.ClientServices;
 
@@ -39,16 +38,50 @@ public class ClientsServices : IClientsServices
         return ServiceResult<int?>.Success(newClient.Id);
     }
 
-    public async Task<ServiceResult<List<GetClientDto>>> GetAllClientsAsync(int skip, int take)
+    public async Task<ServiceResult<List<GetClientDto>>> GetAllClientsAsync(
+        int skip,
+        int take,
+        string? sortBy,
+        string? sortDir)
     {
-        var clients = await _context.Clients.Select(c => new GetClientDto
+        var query = _context.Clients.AsQueryable();
+
+        bool isDesc = sortDir?.ToLower() == "desc";
+
+        if (!string.IsNullOrEmpty(sortBy))
         {
-            Id = c.Id,
-            ClientName = c.ClientName,
-            Industry = c.Industry.Name,
-            PhoneNumber = c.PhoneNumber,
-            NumberOfContracts = c.Contracts.Count(),
-        }).ToListAsync();
+            if (sortBy.ToLower() == "name")
+            {
+                query = isDesc
+                    ? query.OrderByDescending(c => c.ClientName)
+                    : query.OrderBy(c => c.ClientName);
+            }
+            else if (sortBy.ToLower() == "date")
+            {
+                query = isDesc
+                    ? query.OrderByDescending(c => c.CreatedAt)
+                    : query.OrderBy(c => c.CreatedAt);
+            }
+            else
+            {
+                query = query.OrderBy(c => c.Id);
+            }
+        }
+      
+
+        var clients = await query
+            .Skip(skip)
+            .Take(take)
+            .Select(c => new GetClientDto
+            {
+                Id = c.Id,
+                ClientName = c.ClientName,
+                Industry = c.Industry.Name,
+                PhoneNumber = c.PhoneNumber,
+                NumberOfContracts = c.Contracts.Count()
+            })
+            .ToListAsync();
+
         return ServiceResult<List<GetClientDto>>.Success(clients);
     }
 

@@ -12,8 +12,7 @@ public class ContractDocuments : IDateTimeAuditableEntity
     [Required]
     [MaxLength(100)]
     public string DocumentName { get; set; } 
-    public string DocumentRandomName { get; set; }
-
+    
     public int DocumentTypeId { get; set; }
     [ForeignKey(nameof(DocumentTypeId))]
     public ContractDocumentType DocumentType { get; set; }
