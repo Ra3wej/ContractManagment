@@ -21,6 +21,10 @@ public class ContractsServices : IContractsServices
 
     public async Task<ServiceResult<List<GetContractsDto>>> GetAllContractsAsync(int skip, int take)
     {
+        if (skip < 0 || take < 0)
+        {
+            return ServiceResult<List<GetContractsDto>>.Failure("skip or take cant be negative");
+        }
         var contracts = await _context.Contracts
             .Skip(skip)
             .Take(take)

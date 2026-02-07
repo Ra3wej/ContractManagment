@@ -1,3 +1,4 @@
+using ContractManagment.Api.BackgroundTasks;
 using ContractManagment.Api.Data;
 using ContractManagment.Api.Middlewares;
 using ContractManagment.Api.Services.CategoryServices;
@@ -7,6 +8,7 @@ using ContractManagment.Api.Services.ContractDocumentTypeServices;
 using ContractManagment.Api.Services.ContractServices;
 using ContractManagment.Api.Services.IndustryServices;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,11 +49,17 @@ builder.Services.AddScoped<IContractDocumentsServices, ContractDocumentsServices
 builder.Services.AddScoped<IClientsServices, ClientsServices>();
 builder.Services.AddScoped<ICategoriesServices, CategoriesServices>();
 
+builder.Services.AddHostedService<SeedDataBackgroundTask>();
 
 var app = builder.Build();
 app.UseCors();
 app.UseRouting();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

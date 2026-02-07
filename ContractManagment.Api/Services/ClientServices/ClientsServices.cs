@@ -44,6 +44,10 @@ public class ClientsServices : IClientsServices
         string? sortBy,
         string? sortDir)
     {
+        if (skip < 0 || take < 0)
+        {
+            return ServiceResult<List<GetClientDto>>.Failure("skip or take cant be negative");
+        }
         var query = _context.Clients.AsQueryable();
 
         bool isDesc = sortDir?.ToLower() == "desc";

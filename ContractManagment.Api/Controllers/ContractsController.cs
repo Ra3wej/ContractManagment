@@ -34,6 +34,7 @@ public class ContractsController : ControllerBase
         [FromQuery] int skip = 0,
         [FromQuery] int take = 10)
     {
+        
         var result = await _contractsServices.GetAllContractsAsync(skip, take);
 
         if (!result.IsSuccess)
