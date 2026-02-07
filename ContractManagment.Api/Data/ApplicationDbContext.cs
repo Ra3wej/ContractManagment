@@ -57,8 +57,9 @@ public partial class ApplicationDbContext
         });
         modelBuilder.Entity<Categories>(entity =>
         {
-            entity.HasIndex(c => c.Name).IsUnique();
-
+            entity.HasIndex(c => c.Name)
+             .IsUnique()
+             .HasFilter("[StatusIsActive] = 1");
         });
         OnModelCreatingPartial(modelBuilder);
 

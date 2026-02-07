@@ -80,7 +80,7 @@ public class ContractsServices : IContractsServices
                     FilePath = d.FilePath
                 }).ToList()
             })
-            .SingleOrDefaultAsync();
+            .FirstOrDefaultAsync();
 
         if (contract == null)
             return ServiceResult<GetOneContractDto?>.Failure("Contract not found");
@@ -94,7 +94,7 @@ public class ContractsServices : IContractsServices
             return ServiceResult<Guid?>.Failure("Start Date should be before end date.");
         if (addDto.ContractValue < 0)
             return ServiceResult<Guid?>.Failure("contract value should not be negative.");
-        if (!await _context.Categories.AnyAsync(c => c.StatusIsActive && !c.IsDeleted && c.Id == addDto.CategoryId))
+        if (!await _context.Categories.AnyAsync(c => c.StatusIsActive && c.StatusIsActive && c.Id == addDto.CategoryId))
             return ServiceResult<Guid?>.Failure("contract category should be an active category.");
         if (addDto.Status is ContractStatus.Active or ContractStatus.Completed)
         {
@@ -147,7 +147,7 @@ public class ContractsServices : IContractsServices
         if (!await _context.Categories.AnyAsync(c =>
                 c.Id == updateDto.CategoryId &&
                 c.StatusIsActive &&
-                !c.IsDeleted))
+                c.StatusIsActive))
             return ServiceResult<bool>.Failure("Contract category should be an active category.");
 
 
@@ -212,6 +212,7 @@ public class ContractsServices : IContractsServices
         {
             return ServiceResult<bool>.Failure(updateStatusCheck.message!);
         }
+        await _context.SaveChangesAsync();
         return ServiceResult<bool>.Success(true);
     }
 

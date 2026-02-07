@@ -1,4 +1,5 @@
 ﻿using ContractManagment.Api.DTOs;
+using ContractManagment.Api.Services.CategoryServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +9,9 @@ namespace ContractManagment.Api.Controllers;
 [ApiController]
 public class CategoriesController : ControllerBase
 {
-    private readonly ICategoryServices _categoryServices;
+    private readonly ICategoriesServices _categoryServices;
 
-    public CategoriesController(ICategoryServices categoryServices)
+    public CategoriesController(ICategoriesServices categoryServices)
     {
         _categoryServices = categoryServices;
     }
@@ -56,9 +57,9 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPatch("{id:int}/status")]
-    public async Task<IActionResult> UpdateStatus(int id, [FromQuery] bool activate)
+    public async Task<IActionResult> UpdateStatus(int id)
     {
-        var result = await _categoryServices.UpdateCategoryStatusAsync(id, activate);
+        var result = await _categoryServices.UpdateCategoryStatusAsync(id);
 
         if (!result.IsSuccess)
             return BadRequest(result);

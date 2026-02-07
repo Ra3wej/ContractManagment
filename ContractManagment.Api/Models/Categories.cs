@@ -16,7 +16,6 @@ public class Categories : IDateTimeAuditableEntity
     public string? Description { get; set; }
 
     public bool StatusIsActive { get; private set; } = true;
-    public bool IsDeleted { get; private set; } = false;
 
     public DateTime CreatedAt { get; set; }
     public DateTime LastUpdatedAt { get; set; }

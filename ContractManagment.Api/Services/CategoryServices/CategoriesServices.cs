@@ -21,8 +21,7 @@ namespace ContractManagment.Api.Services.CategoryServices
         public async Task<ServiceResult<int>> CreateCategoryAsync(AddCategoriesDto dto)
         {
             var exists = await _context.Categories
-                .AnyAsync(c => c.Name == dto.Name && !c.IsDeleted);
-
+                .AnyAsync(c => c.Name == dto.Name && c.StatusIsActive);
             if (exists)
                 return ServiceResult<int>.Failure("Category already exists.");
 
@@ -41,7 +40,7 @@ namespace ContractManagment.Api.Services.CategoryServices
         public async Task<ServiceResult<List<GetCategoriesDto>>> GetAllCategoriesAsync()
         {
             var categories = await _context.Categories
-                .Where(c => !c.IsDeleted)
+                .Where(c => c.StatusIsActive)
                 .Select(c => new GetCategoriesDto
                 {
                     Id = c.Id,
@@ -57,7 +56,7 @@ namespace ContractManagment.Api.Services.CategoryServices
         {
             var category = await _context.Categories
                 .Include(c => c.Contracts)
-                .Where(c => c.Id == id && !c.IsDeleted)
+                .Where(c => c.Id == id && c.StatusIsActive)
                 .Select(c => new GetOneCategoryDto
                 {
                     Id = c.Id,
@@ -88,7 +87,7 @@ namespace ContractManagment.Api.Services.CategoryServices
         {
             var category = await _context.Categories
                 .Include(c => c.Contracts)
-                .FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
+                .FirstOrDefaultAsync(c => c.Id == id && c.StatusIsActive);
 
             if (category == null)
                 return ServiceResult<bool>.Failure("Category not found.");
@@ -106,11 +105,11 @@ namespace ContractManagment.Api.Services.CategoryServices
             return ServiceResult<bool>.Success(true);
         }
 
-        public async Task<ServiceResult<bool>> UpdateCategoryStatusAsync(int id, bool activate)
+        public async Task<ServiceResult<bool>> UpdateCategoryStatusAsync(int id)
         {
             var category = await _context.Categories
                 .Include(c => c.Contracts)
-                .FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
+                .FirstOrDefaultAsync(c => c.Id == id && c.StatusIsActive);
 
             if (category == null)
                 return ServiceResult<bool>.Failure("Category not found.");
@@ -128,7 +127,7 @@ namespace ContractManagment.Api.Services.CategoryServices
         {
             var category = await _context.Categories
                 .Include(c => c.Contracts)
-                .FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
+                .FirstOrDefaultAsync(c => c.Id == id && c.StatusIsActive);
 
             if (category == null)
                 return ServiceResult<GetCategoryStatisticsDto>.Failure("Category not found.");

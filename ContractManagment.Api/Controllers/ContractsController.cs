@@ -23,9 +23,9 @@ public class ContractsController : ControllerBase
         var result = await _contractsServices.CreateNewContractAsync(dto);
 
         if (!result.IsSuccess)
-            return BadRequest(result.Message);
+            return BadRequest(result);
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 
     // GET /api/contracts?skip=0&take=10
@@ -37,9 +37,9 @@ public class ContractsController : ControllerBase
         var result = await _contractsServices.GetAllContractsAsync(skip, take);
 
         if (!result.IsSuccess)
-            return BadRequest(result.Message);
+            return BadRequest(result);
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 
     // GET /api/contracts/{id}
@@ -49,9 +49,9 @@ public class ContractsController : ControllerBase
         var result = await _contractsServices.GetOneContractAsync(contractNumber);
 
         if (!result.IsSuccess)
-            return NotFound(result.Message);
+            return NotFound(result);
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 
     // PUT /api/contracts/{id}
@@ -63,9 +63,9 @@ public class ContractsController : ControllerBase
         var result = await _contractsServices.UpdateContractAsync(contractNumber, dto);
 
         if (!result.IsSuccess)
-            return BadRequest(result.Message);
+            return BadRequest(result);
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 
     // DELETE /api/contracts/{id}
@@ -75,21 +75,21 @@ public class ContractsController : ControllerBase
         var result = await _contractsServices.DeleteContractAsync(contractNumber);
 
         if (!result.IsSuccess)
-            return BadRequest(result.Message);
+            return BadRequest(result);
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 
     // PATCH /api/contracts/{id}/status
-    [HttpPatch("{contractNumber:guid}/{newContractStatus:ContractStatus}/status")]
-    public async Task<IActionResult> UpdateContractStatus(Guid contractNumber,ContractStatus newContractStatus)
+    [HttpPatch("{contractNumber:guid}/{newContractStatus:int}/status")]
+    public async Task<IActionResult> UpdateContractStatus(Guid contractNumber, ContractStatus newContractStatus)
     {
-        var result = await _contractsServices.UpdateContractStatusAsync(contractNumber,newContractStatus);
+        var result = await _contractsServices.UpdateContractStatusAsync(contractNumber, newContractStatus);
 
         if (!result.IsSuccess)
-            return BadRequest(result.Message);
+            return BadRequest(result);
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 
     // POST /api/contracts/{id}/clone
@@ -99,8 +99,8 @@ public class ContractsController : ControllerBase
         var result = await _contractsServices.CloneContractAsync(contractNumber);
 
         if (!result.IsSuccess)
-            return BadRequest(result.Message);
+            return BadRequest(result);
 
-        return Ok(result.Data);
+        return Ok(result);
     }
 }
